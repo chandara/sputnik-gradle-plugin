@@ -7,10 +7,10 @@ dependencies {
 
 apply plugin: 'maven'
 
-group = 'org.sputnik.gradle.plugin'
+group = 'org.sputnik.plugin'
 // looks odd, but pulls the version from the property defined in gradle.properties
 version = version
-artifactId = 'preprocessor'
+//artifactId = 'preprocessor'
 
 repositories {
     mavenCentral()
@@ -28,7 +28,7 @@ dependencies {
 install {
     repositories.mavenInstaller {
         pom.version = project.version
-        pom.artifactId = project.artifactId
+        pom.artifactId = "gradle"
     }
 }
 
