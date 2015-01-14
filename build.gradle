@@ -52,7 +52,7 @@ uploadArchives {
 //            }
 
             repository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: "deployment", password: "deployment123")
+                authentication(userName: ${env.nexus_username}, password: ${env.nexus_password})
             }
 
 //            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
