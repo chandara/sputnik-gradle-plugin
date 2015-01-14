@@ -56,7 +56,7 @@ uploadArchives {
             }
 
             snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: "deployment", password: "deployment123")
+                authentication(userName: System.getenv('nexus_username'), password: System.getenv('nexus_password'))
             }
 
             pom.project {
