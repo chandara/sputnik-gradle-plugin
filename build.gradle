@@ -25,7 +25,7 @@ dependencies {
 
 install {
     repositories.mavenInstaller {
-        pom.version = "1.0.0"
+        pom.version = "1.0.0-SNAPSHOT"
         pom.artifactId = "sputnik-gradle-plugin"
     }
 }
