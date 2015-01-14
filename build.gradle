@@ -25,7 +25,7 @@ dependencies {
 
 install {
     repositories.mavenInstaller {
-        pom.version = "1.0.0"
+        pom.version = "1.0.0-SNAPSHOT"
         pom.artifactId = "sputnik-gradle-plugin"
     }
 }
@@ -51,8 +51,10 @@ uploadArchives {
 //                authentication(userName: "deployment", password: "deployment123")
 //            }
 
-            repository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: System.getenv('nexus_username'), password: System.getenv('nexus_password'))
+            if (hasProperty("nexus_username")) {
+                repository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: System.getenv('nexus_username'), password: System.getenv('nexus_password'))
+                }
             }
 
 //            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
