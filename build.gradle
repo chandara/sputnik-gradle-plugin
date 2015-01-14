@@ -1,16 +1,14 @@
 apply plugin: 'groovy'
+apply plugin: 'maven'
 
 dependencies {
     compile gradleApi()
     compile localGroovy()
 }
 
-apply plugin: 'maven'
-
-group = 'org.sputnik.plugin'
+group = 'com.github.chandara'
 // looks odd, but pulls the version from the property defined in gradle.properties
 version = version
-//artifactId = 'preprocessor'
 
 repositories {
     mavenCentral()
@@ -27,12 +25,68 @@ dependencies {
 
 install {
     repositories.mavenInstaller {
-        pom.version = project.version
-        pom.artifactId = "gradle"
+        pom.version = "1.0.0"
+        pom.artifactId = "sputnik-gradle-plugin"
     }
 }
 
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
 
-jar {
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
 
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+//            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+//                authentication(userName: "deployment", password: "deployment123")
+//            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: "deployment", password: "deployment123")
+            }
+
+            pom.project {
+                name 'Sputnik Gradle Plugin'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'A gradle plugin to integrate the sputnik (static code analytics report on gerrit) with gradle'
+                url 'https://github.com/chandara/sputnik-gradle-plugin'
+
+                scm {
+                    connection 'scm:git:https://github.com/chandara/sputnik-gradle-plugin.git'
+                    developerConnection 'scm:git:https://github.com/chandara/sputnik-gradle-plugin.git'
+                    url 'https://github.com/chandara/sputnik-gradle-plugin.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'chandara'
+                        name 'chandara sang'
+                        email 'chandara.sang@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
 }
