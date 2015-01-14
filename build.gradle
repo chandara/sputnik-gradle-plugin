@@ -51,9 +51,13 @@ uploadArchives {
 //                authentication(userName: "deployment", password: "deployment123")
 //            }
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+            repository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
                 authentication(userName: "deployment", password: "deployment123")
             }
+
+//            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+//                authentication(userName: "deployment", password: "deployment123")
+//            }
 
             pom.project {
                 name 'Sputnik Gradle Plugin'
