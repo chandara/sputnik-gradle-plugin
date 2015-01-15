@@ -15,7 +15,7 @@ public class SputnikPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.extensions.create("sputnik", SputnikPluginExtension)
+        project.extensions.create("sputnik", SputnikPluginExtension, project)
 
         project.task("sputnik") << {
             setConnectorProperty(GeneralOption.CONNECTOR_TYPE, Connectors.GERRIT)
@@ -52,31 +52,5 @@ public class SputnikPlugin implements Plugin<Project> {
         if(value != null) {
             mProperties.setProperty(key,value);
         }
-    }
-
-    class SputnikPluginExtension {
-        String connectionHost
-        int connectionPort
-        boolean connectionUseHttps
-        String connectorUsername
-        String connectorPassword
-
-        String processTestFiles
-        int maxNumberOfComments
-        boolean commentOnlyChangedLines
-
-        boolean checkstyleEnabled
-        String checkstyleConfigurationFile
-
-        boolean pmdEnabled
-        String pmdRulesets
-
-        boolean findbugsEnabled
-        String findbugsExcludeFilter
-        String findbugsIncludeFilter
-
-        boolean scalastyleEnabled
-        String scalastyleConfigurationFile
-
     }
 }
