@@ -3,7 +3,9 @@ package com.sputnik.gradle.plugin;
 import org.gradle.api.Project
 import org.gradle.api.Plugin
 import pl.touk.sputnik.Connectors
+import pl.touk.sputnik.configuration.CliOption
 import pl.touk.sputnik.configuration.ConfigurationHolder
+import pl.touk.sputnik.configuration.ConfigurationOption
 import pl.touk.sputnik.configuration.GeneralOption
 import pl.touk.sputnik.connector.ConnectorFacade
 import pl.touk.sputnik.connector.ConnectorFacadeFactory
@@ -18,7 +20,7 @@ public class SputnikPlugin implements Plugin<Project> {
         project.extensions.create("sputnik", SputnikPluginExtension, project)
 
         project.task("sputnik") << {
-            setConnectorProperty(GeneralOption.CONNECTOR_TYPE, Connectors.GERRIT)
+            setConnectorProperty(GeneralOption.CONNECTOR_TYPE, Connectors.GERRIT.name().toLowerCase())
             setConnectorProperty(GeneralOption.HOST, "${project.sputnik.connectionHost}")
             setConnectorProperty(GeneralOption.PORT, "${project.sputnik.connectionPort}")
             setConnectorProperty(GeneralOption.USE_HTTPS, "${project.sputnik.connectionUseHttps}")
@@ -41,6 +43,8 @@ public class SputnikPlugin implements Plugin<Project> {
 
             setConnectorProperty(GeneralOption.SCALASTYLE_ENABLED, "${project.sputnik.scalastyleEnabled}")
             setConnectorProperty(GeneralOption.SCALASTYLE_CONFIGURATION_FILE, "${project.sputnik.scalastyleConfigurationFile}")
+            setConnectorProperty(CliOption.CHANGE_ID, "${project.changeId}")
+            setConnectorProperty(CliOption.REVISION_ID, "${project.revisionId}")
 
             ConfigurationHolder.initFromProperties(mProperties)
             ConnectorFacade facade = ConnectorFacadeFactory.INSTANCE.build(ConfigurationHolder.instance().getProperty(GeneralOption.CONNECTOR_TYPE))
@@ -48,9 +52,9 @@ public class SputnikPlugin implements Plugin<Project> {
         }
     }
 
-    void setConnectorProperty(String key, String value) {
+    private void setConnectorProperty(ConfigurationOption opt, String value) {
         if(value != null) {
-            mProperties.setProperty(key,value);
+            mProperties.setProperty(opt.getKey(),value);
         }
     }
 }
